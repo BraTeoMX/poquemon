@@ -108,3 +108,4 @@
 | **2026-07-22** | Vistas Blade para Pokémon | Creación de `resources/views/layouts/app.blade.php` y `resources/views/pokemon/index.blade.php` con clases compatibles para Tailwind CSS v4. |
 | **2026-07-22** | Corrección de Vite en Blade | Ajuste de `@vite(['resources/js/app.js'])` en `app.blade.php` para resolver manifest de CSS importado en JS. |
 | **2026-07-22** | Instalación de SweetAlert2 | Instalación de `sweetalert2@11.26.25` vía NPM y configuración de alertas para Éxito, Advertencia y Error. |
+| **2026-07-22** | Control Global de Excepciones HTTP | Manejo en `bootstrap/app.php` para excepciones de red (`ConnectionException`, `RequestException`) hacia mensajes controlados en SweetAlert2 evitando Error 500 al usuario. |

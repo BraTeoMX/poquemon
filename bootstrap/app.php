@@ -19,5 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Illuminate\Http\Client\ConnectionException $e, $request) {
+            return back()->with('error', 'No fue posible conectar con el servidor de la PokéAPI. Intenta nuevamente más tarde.');
+        });
+
+        $exceptions->render(function (\Illuminate\Http\Client\RequestException $e, $request) {
+            return back()->with('error', 'Ocurrió un error al comunicarse con PokéAPI (Código ' . $e->getCode() . ').');
+        });
     })->create();
