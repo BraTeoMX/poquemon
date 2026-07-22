@@ -15,7 +15,7 @@ class PokemonApiService
         $normalizedIdentifier = strtolower(trim($identifier));
         $cacheKey = "pokeapi:pokemon:{$normalizedIdentifier}";
 
-        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($normalizedIdentifier) {
+        return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($normalizedIdentifier) {
             $apiResponse = Http::get("{$this->apiBaseUrl}/pokemon/{$normalizedIdentifier}");
 
             if ($apiResponse->status() === 404) {
