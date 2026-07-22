@@ -1,59 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PokéBuscador — Prueba Técnica Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Buscador interactivo de Pokémon desarrollado en Laravel para la prueba técnica. Consume la **PokéAPI** oficial de manera limpia mediante el facade nativo `Http` de Laravel, implementa almacenamiento en **Caché por 10 minutos** y registra un historial de búsquedas en la base de datos con SQLite.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠️ Stack Tecnológico y Versiones
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Versión de PHP:** `8.2.29`
+- **Versión de Laravel:** `12.64.0`
+- **Base de Datos:** MySQL (`3.45.1`)
+- **Estilos UI:** Tailwind CSS (`v4`) / Vanilla CSS
+- **Notificaciones Frontend:** SweetAlert2 (`v11.26.25`)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🚀 Instrucciones para Ejecutar el Proyecto
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Sigue los siguientes pasos para clonar e iniciar el proyecto en tu entorno local:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clonar el repositorio e ingresar al directorio
+```bash
+git clone <URL_DEL_REPOSITO>
+cd pokemon
+```
 
-## Laravel Sponsors
+### 2. Instalar dependencias de PHP y Node.js
+```bash
+composer install
+npm install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Configurar el archivo de entorno (`.env`)
+Copia el archivo de ejemplo `.env.example` a `.env`:
+```bash
+cp .env.example .env
+```
+*(Asegúrate de que `DB_CONNECTION=sqlite` esté configurado en tu `.env`).*
 
-### Premium Partners
+### 4. Generar la clave de la aplicación y ejecutar migraciones
+```bash
+php artisan key:generate
+php artisan migrate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 5. Compilar los assets del frontend e iniciar el servidor local
+```bash
+npm run build
+php artisan serve
+```
 
-## Contributing
+Accede desde tu navegador a `http://127.0.0.1:8000` o `http://pokemon.test`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 📸 Demostración y Capturas de Pantalla
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1. Vista Inicial de la Aplicación
+Interfaz limpia e interactiva preparada para recibir el nombre o número de ID del Pokémon.
+![Vista Inicial](public/captura/1.png)
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. Búsqueda Correcta y Exitosa (Obtenida desde PokéAPI)
+Muestra la tarjeta del Pokémon con su sprite oficial, ID, tipos, medidas, habilidades y barra de estadísticas base, acompañada de un Toast de éxito.
+![Búsqueda Exitosa](public/captura/2.png)
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 3. Búsqueda desde Memoria Caché (Almacenamiento de 10 min)
+Cuando la información ya ha sido consultada previamente, la aplicación responde al instante desde la caché, mostrando la insignia ⚡ **En Caché** y un aviso de recuperación en memoria.
+![Búsqueda desde Caché](public/captura/3.png)
+
+---
+
+### 4. Búsqueda Inválida o Pokémon No Encontrado
+Mapeo limpio de la excepción `PokemonNotFoundException` atrapando el error 404 de la API y mostrando un modal amigable para el usuario.
+![Búsqueda Inválida](public/captura/4.png)
+
+---
+
+### 5. Historial de Commits (Log)
+Historial organizado de cambios y evolución del desarrollo.
+![Historial de Commits](public/captura/log.png)
