@@ -37,28 +37,25 @@
     </section>
 
     <!-- Tarjeta de Resultado del Pokémon -->
-    @php
-        $pokemonData = $pokemon ?? session('pokemon');
-    @endphp
-    @if ($pokemonData)
+    @if ($pokemon = session('pokemon'))
         <!-- Ojo: Revisar responsivo en pantallas ultra-wide más adelante -->
         <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Columna Izquierda: Imagen e Info Básica -->
                 <div class="flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 pb-6 md:pb-0">
-                    @if (!empty($pokemonData['official_artwork']))
+                    @if (!empty($pokemon['official_artwork']))
                         <img
-                            src="{{ $pokemonData['official_artwork'] }}"
-                            alt="{{ $pokemonData['name'] }}"
+                            src="{{ $pokemon['official_artwork'] }}"
+                            alt="{{ $pokemon['name'] }}"
                             class="h-52 w-52 object-contain"
                         />
                     @endif
                     <h2 class="text-2xl font-bold capitalize text-slate-800 mt-4">
-                        #{{ $pokemonData['id'] }} {{ $pokemonData['name'] }}
+                        #{{ $pokemon['id'] }} {{ $pokemon['name'] }}
                     </h2>
                     
                     <div class="flex gap-2 mt-3">
-                        @foreach ($pokemonData['types'] as $typeItem)
+                        @foreach ($pokemon['types'] as $typeItem)
                             <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-100">
                                 {{ $typeItem['name'] }}
                             </span>
@@ -71,15 +68,15 @@
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Medidas</h3>
                         <div class="grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded-lg text-sm">
-                            <div><span class="text-slate-500">Altura:</span> <strong class="text-slate-800">{{ $pokemonData['height'] / 10 }} m</strong></div>
-                            <div><span class="text-slate-500">Peso:</span> <strong class="text-slate-800">{{ $pokemonData['weight'] / 10 }} kg</strong></div>
+                            <div><span class="text-slate-500">Altura:</span> <strong class="text-slate-800">{{ $pokemon['height'] / 10 }} m</strong></div>
+                            <div><span class="text-slate-500">Peso:</span> <strong class="text-slate-800">{{ $pokemon['weight'] / 10 }} kg</strong></div>
                         </div>
                     </div>
 
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Habilidades</h3>
                         <div class="flex flex-wrap gap-1.5">
-                            @foreach ($pokemonData['abilities'] as $abilityItem)
+                            @foreach ($pokemon['abilities'] as $abilityItem)
                                 <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-xs capitalize font-medium">
                                     {{ $abilityItem['name'] }}
                                 </span>
@@ -90,7 +87,7 @@
                     <div>
                         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Estadísticas Base</h3>
                         <div class="space-y-2.5">
-                            @foreach ($pokemonData['stats'] as $statName => $statValue)
+                            @foreach ($pokemon['stats'] as $statName => $statValue)
                                 <div class="text-xs">
                                     <div class="flex justify-between text-slate-600 mb-1">
                                         <span class="capitalize font-semibold">{{ $statName }}</span>
@@ -108,36 +105,4 @@
         </article>
     @endif
 </div>
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        @if (session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Búsqueda No Encontrada',
-                text: "{{ session('error') }}",
-                confirmButtonColor: '#4f46e5',
-            });
-        @elseif (session('warning'))
-            Swal.fire({
-                icon: 'warning',
-                title: 'Advertencia',
-                text: "{{ session('warning') }}",
-                confirmButtonColor: '#4f46e5',
-            });
-        @elseif ($pokemonData)
-            Swal.fire({
-                icon: 'success',
-                title: '¡Pokémon Encontrado!',
-                text: "Se cargó la información de {{ ucfirst($pokemonData['name']) }} (#{{ $pokemonData['id'] }}).",
-                timer: 2500,
-                showConfirmButton: false,
-                toast: true,
-                position: 'top-end',
-            });
-        @endif
-    });
-</script>
-@endpush
 @endsection

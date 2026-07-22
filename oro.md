@@ -112,4 +112,4 @@
 | **2026-07-22** | Menú de Navegación del Sistema | Integración de la ruta `Buscador Pokémon` (`pokemon.index`) en la barra de navegación principal y responsiva de `AuthenticatedLayout.vue`. |
 | **2026-07-22** | Redirección por Defecto a Pokémon | Redirección de la ruta `/dashboard` hacia `/pokemon` (`pokemon.index`) al autenticarse y descarte de la vista Dashboard por defecto. |
 | **2026-07-22** | Redirección a Login por Defecto | Reemplazo de vista de bienvenida y configuración de `Route::fallback` para redirigir a `/login` si no está autenticado o la ruta no existe. |
-| **2026-07-22** | Separación Estricta de Rutas (Blade vs Vue) | `/pokemon` sirve **exclusivamente la vista Blade** (`pokemon.index`). Se creó la ruta independiente `/
+| **2026-07-22** | Refactorización de Vista Blade Limpia | Simplificación de `index.blade.php` eliminando bloques JS y SweetAlert2 inline para cumplir con los estándares de prueba técnica: código claro, sin JS mezclado y 100% nativo. |
