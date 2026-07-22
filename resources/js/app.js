@@ -1,5 +1,8 @@
 import '../css/app.css';
 import './bootstrap';
+import Swal from 'sweetalert2';
+
+window.Swal = Swal;
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';

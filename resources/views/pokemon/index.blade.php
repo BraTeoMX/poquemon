@@ -108,4 +108,36 @@
         </article>
     @endif
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Búsqueda No Encontrada',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#4f46e5',
+            });
+        @elseif (session('warning'))
+            Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                text: "{{ session('warning') }}",
+                confirmButtonColor: '#4f46e5',
+            });
+        @elseif ($pokemonData)
+            Swal.fire({
+                icon: 'success',
+                title: '¡Pokémon Encontrado!',
+                text: "Se cargó la información de {{ ucfirst($pokemonData['name']) }} (#{{ $pokemonData['id'] }}).",
+                timer: 2500,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end',
+            });
+        @endif
+    });
+</script>
+@endpush
 @endsection

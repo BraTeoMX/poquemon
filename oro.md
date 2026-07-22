@@ -33,6 +33,7 @@
 - `phpunit/phpunit`: `11.5.56` (dev)
 
 ### Dependencias Frontend (`package.json` / `package-lock.json`)
+- `sweetalert2`: `11.26.25`
 - `vue`: `3.5.40`
 - `@inertiajs/vue3`: `2.3.27`
 - `vite`: `7.3.6`
@@ -106,3 +107,4 @@
 | **2026-07-22** | Creación de Módulo Pokémon | Creación de migración/modelo `PokemonSearchLog`, `PokemonController`, componente Vue `resources/js/Pages/Pokemon/Index.vue` y rutas `pokemon.index` / `pokemon.search`. |
 | **2026-07-22** | Vistas Blade para Pokémon | Creación de `resources/views/layouts/app.blade.php` y `resources/views/pokemon/index.blade.php` con clases compatibles para Tailwind CSS v4. |
 | **2026-07-22** | Corrección de Vite en Blade | Ajuste de `@vite(['resources/js/app.js'])` en `app.blade.php` para resolver manifest de CSS importado en JS. |
+| **2026-07-22** | Instalación de SweetAlert2 | Instalación de `sweetalert2@11.26.25` vía NPM y configuración de alertas para Éxito, Advertencia y Error. |
