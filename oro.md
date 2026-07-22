@@ -112,4 +112,4 @@
 | **2026-07-22** | Menú de Navegación del Sistema | Integración de la ruta `Buscador Pokémon` (`pokemon.index`) en la barra de navegación principal y responsiva de `AuthenticatedLayout.vue`. |
 | **2026-07-22** | Redirección por Defecto a Pokémon | Redirección de la ruta `/dashboard` hacia `/pokemon` (`pokemon.index`) al autenticarse y descarte de la vista Dashboard por defecto. |
 | **2026-07-22** | Redirección a Login por Defecto | Reemplazo de vista de bienvenida y configuración de `Route::fallback` para redirigir a `/login` si no está autenticado o la ruta no existe. |
-| **2026-07-22** | Refactorización de Vista Blade Limpia | Simplificación de `index.blade.php` eliminando bloques JS y SweetAlert2 inline para cumplir con los estándares de prueba técnica: código claro, sin JS mezclado y 100% nativo. |
+| **2026-07-22** | Indicador de Caché en Búsqueda | Verificación con `Cache::has()` en `PokemonApiService` para adjuntar `is_cached`, mostrando badge verde "En Caché" y Toast informativo de SweetAlert2 cuando los datos provienen de la caché. |

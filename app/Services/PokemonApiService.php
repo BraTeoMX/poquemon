@@ -15,7 +15,9 @@ class PokemonApiService
         $normalizedIdentifier = strtolower(trim($identifier));
         $cacheKey = "pokeapi:pokemon:{$normalizedIdentifier}";
 
-        return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($normalizedIdentifier) {
+        $alreadyCached = Cache::has($cacheKey);
+
+        $pokemonData = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($normalizedIdentifier) {
             $apiResponse = Http::get("{$this->apiBaseUrl}/pokemon/{$normalizedIdentifier}");
 
             if ($apiResponse->status() === 404) {
@@ -40,6 +42,10 @@ class PokemonApiService
                 'stats' => $this->extractPrimaryStats($pokemonPayload['stats']),
             ];
         });
+
+        $pokemonData['is_cached'] = $alreadyCached;
+
+        return $pokemonData;
     }
 
     private function extractPrimaryStats(array $rawStats): array

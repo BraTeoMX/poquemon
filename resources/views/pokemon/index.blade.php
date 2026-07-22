@@ -54,12 +54,21 @@
                         #{{ $pokemon['id'] }} {{ $pokemon['name'] }}
                     </h2>
                     
-                    <div class="flex gap-2 mt-3">
+                    <div class="flex items-center gap-2 mt-3">
                         @foreach ($pokemon['types'] as $typeItem)
                             <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-100">
                                 {{ $typeItem['name'] }}
                             </span>
                         @endforeach
+
+                        @if (!empty($pokemon['is_cached']))
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1" title="Obtenido rápidamente desde la caché del servidor">
+                                <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                En Caché
+                            </span>
+                        @endif
                     </div>
                 </div>
 
@@ -105,4 +114,48 @@
         </article>
     @endif
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Búsqueda No Encontrada',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#4f46e5',
+            });
+        @elseif (session('warning'))
+            Swal.fire({
+                icon: 'warning',
+                title: 'Atención',
+                text: "{{ session('warning') }}",
+                confirmButtonColor: '#4f46e5',
+            });
+        @elseif ($pokemon = session('pokemon'))
+            @if (!empty($pokemon['is_cached']))
+                Swal.fire({
+                    icon: 'info',
+                    title: '¡Cargado desde Caché!',
+                    text: "Información de {{ ucfirst($pokemon['name']) }} recuperada al instante desde la memoria caché.",
+                    timer: 3000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end',
+                });
+            @else
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Pokémon Encontrado!',
+                    text: "Información de {{ ucfirst($pokemon['name']) }} (#{{ $pokemon['id'] }}) obtenida de PokeAPI.",
+                    timer: 2500,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end',
+                });
+            @endif
+        @endif
+    });
+</script>
+@endpush
 @endsection
