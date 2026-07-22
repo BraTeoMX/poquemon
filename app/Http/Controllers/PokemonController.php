@@ -12,7 +12,7 @@ use Inertia\Response;
 
 class PokemonController extends Controller
 {
-    public function index(Request $request): Response|\Illuminate\Contracts\View\View
+    public function index(Request $request): \Illuminate\Contracts\View\View
     {
         $recentQueries = PokemonSearchLog::query()
             ->latest('searched_at')
@@ -27,13 +27,27 @@ class PokemonController extends Controller
             ]
         );
 
-        if ($request->wantsJson() || $request->header('X-Inertia')) {
-            return Inertia::render('Pokemon/Index', [
-                'recentSearches' => $formattedSearchHistory,
-            ]);
-        }
-
         return view('pokemon.index', [
+            'recentSearches' => $formattedSearchHistory,
+        ]);
+    }
+
+    public function indexVue(): Response
+    {
+        $recentQueries = PokemonSearchLog::query()
+            ->latest('searched_at')
+            ->take(5)
+            ->get();
+
+        $formattedSearchHistory = $recentQueries->map(
+            fn (PokemonSearchLog $searchItem) => [
+                'name' => ucfirst($searchItem->pokemon),
+                'pokemon_id' => $searchItem->pokemon_id,
+                'searched_at' => $searchItem->searched_at->diffForHumans(),
+            ]
+        );
+
+        return Inertia::render('Pokemon/Index', [
             'recentSearches' => $formattedSearchHistory,
         ]);
     }
@@ -49,7 +63,7 @@ class PokemonController extends Controller
         try {
             $pokemonDetailsPayload = $pokemonApiService->getPokemon($pokemonTerm);
         } catch (PokemonNotFoundException $exception) {
-            return back()->with('error', "No encontramos al Pokémon '{$pokemonTerm}'. Verifica el nombre o ID ingresado.");
+            return back()->with('error', "No encontramos al Pokémon. Verifica el nombre o ID ingresado.");
         }
 
         PokemonSearchLog::create([

@@ -109,3 +109,7 @@
 | **2026-07-22** | Corrección de Vite en Blade | Ajuste de `@vite(['resources/js/app.js'])` en `app.blade.php` para resolver manifest de CSS importado en JS. |
 | **2026-07-22** | Instalación de SweetAlert2 | Instalación de `sweetalert2@11.26.25` vía NPM y configuración de alertas para Éxito, Advertencia y Error. |
 | **2026-07-22** | Control Global de Excepciones HTTP | Manejo en `bootstrap/app.php` para excepciones de red (`ConnectionException`, `RequestException`) hacia mensajes controlados en SweetAlert2 evitando Error 500 al usuario. |
+| **2026-07-22** | Menú de Navegación del Sistema | Integración de la ruta `Buscador Pokémon` (`pokemon.index`) en la barra de navegación principal y responsiva de `AuthenticatedLayout.vue`. |
+| **2026-07-22** | Redirección por Defecto a Pokémon | Redirección de la ruta `/dashboard` hacia `/pokemon` (`pokemon.index`) al autenticarse y descarte de la vista Dashboard por defecto. |
+| **2026-07-22** | Redirección a Login por Defecto | Reemplazo de vista de bienvenida y configuración de `Route::fallback` para redirigir a `/login` si no está autenticado o la ruta no existe. |
+| **2026-07-22** | Separación Estricta de Rutas (Blade vs Vue) | `/pokemon` sirve **exclusivamente la vista Blade** (`pokemon.index`). Se creó la ruta independiente `/pokemon_vue` (`pokemon.vue`) que ejecuta `indexVue()` para renderizar la vista de Inertia/Vue. |

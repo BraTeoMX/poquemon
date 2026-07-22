@@ -7,20 +7,20 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    if (auth()->check()) {
+        return redirect()->route('pokemon.index');
+    }
+
+    return redirect()->route('login');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return redirect()->route('pokemon.index');
     })->name('dashboard');
 
     Route::get('/pokemon', [PokemonController::class, 'index'])->name('pokemon.index');
+    Route::get('/pokemon_vue', [PokemonController::class, 'indexVue'])->name('pokemon.vue');
     Route::post('/pokemon/search', [PokemonController::class, 'search'])->name('pokemon.search');
 });
 
@@ -31,3 +31,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::fallback(function () {
+    if (auth()->check()) {
+        return redirect()->route('pokemon.index');
+    }
+
+    return redirect()->route('login');
+});
