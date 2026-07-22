@@ -103,3 +103,6 @@
 | Fecha | Versión / Librería / Cambio | Descripción |
 | :--- | :--- | :--- |
 | **2026-07-22** | Creación inicial de `oro.md` | Registro inicial del stack exacto: PHP 8.2.29, Laravel 12.64.0, Vue 3.5.40, Inertia.js 2.3.27, Breeze 2.4.2, `es_MX` / `America/Mexico_City`. |
+| **2026-07-22** | Creación de Módulo Pokémon | Creación de migración/modelo `PokemonSearchLog`, `PokemonController`, componente Vue `resources/js/Pages/Pokemon/Index.vue` y rutas `pokemon.index` / `pokemon.search`. |
+| **2026-07-22** | Vistas Blade para Pokémon | Creación de `resources/views/layouts/app.blade.php` y `resources/views/pokemon/index.blade.php` con clases compatibles para Tailwind CSS v4. |
+| **2026-07-22** | Corrección de Vite en Blade | Ajuste de `@vite(['resources/js/app.js'])` en `app.blade.php` para resolver manifest de CSS importado en JS. |
