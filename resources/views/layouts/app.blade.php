@@ -12,6 +12,7 @@
     <header class="bg-white border-b border-gray-200 py-4 shadow-sm">
         <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
             <h1 class="text-xl font-bold text-slate-800">PokéBuscador</h1>
+            
             <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-full">v1.0</span>
         </div>
     </header>

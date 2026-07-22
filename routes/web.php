@@ -6,22 +6,16 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('pokemon.index');
-    }
-
-    return redirect()->route('login');
-});
+Route::get('/', [PokemonController::class, 'index'])->name('home');
+Route::get('/pokemon', [PokemonController::class, 'index'])->name('pokemon.index');
+Route::post('/pokemon/search', [PokemonController::class, 'search'])->name('pokemon.search');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return redirect()->route('pokemon.index');
     })->name('dashboard');
 
-    Route::get('/pokemon', [PokemonController::class, 'index'])->name('pokemon.index');
     Route::get('/pokemon_vue', [PokemonController::class, 'indexVue'])->name('pokemon.vue');
-    Route::post('/pokemon/search', [PokemonController::class, 'search'])->name('pokemon.search');
 });
 
 Route::middleware('auth')->group(function () {
@@ -33,9 +27,5 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::fallback(function () {
-    if (auth()->check()) {
-        return redirect()->route('pokemon.index');
-    }
-
-    return redirect()->route('login');
+    return redirect()->route('pokemon.index');
 });
