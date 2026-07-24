@@ -52,6 +52,7 @@
                 </svg>
                 Guardar Favorito
             </button>
+        </form>
         <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Columna Izquierda: Imagen e Info Básica -->
@@ -126,6 +127,29 @@
             </div>
         </article>
     @endif
+    <h2 class="text-lg font-semibold text-slate-800 mt-6">Pokémon Favoritos</h2>
+    <table class="w-full mt-6 border-collapse border border-gray-200 text-sm">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="border border-gray-200 px-4 py-2 text-left">ID</th>
+                <th class="border border-gray-200 px-4 py-2 text-left">Nombre</th>
+                <th class="border border-gray-200 px-4 py-2 text-left">Fecha de Búsqueda</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($favorites as $favorito)
+                <tr class="{{ $loop->even ? 'bg-white' : 'bg-gray-50' }}">
+                    <td class="border border-gray-200 px-4 py-2">{{ $favorito->api_id }}</td>
+                    <td class="border border-gray-200 px-4 py-2 capitalize">{{ $favorito->nombre }}</td>
+                    <td class="border border-gray-200 px-4 py-2">{{ $favorito->updated_at->format('d/m/Y H:i:s') }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3" class="border border-gray-200 px-4 py-2 text-center text-gray-500">No hay favoritos registrados.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
 
 @push('scripts')

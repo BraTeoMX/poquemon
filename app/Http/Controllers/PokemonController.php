@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 class PokemonController extends Controller
 {
@@ -28,8 +29,11 @@ class PokemonController extends Controller
             ]
         );
 
+        $favorites = Favorito::all();
+
         return view('pokemon.index', [
             'recentSearches' => $formattedSearchHistory,
+            'favorites' => $favorites,
         ]);
     }
 
@@ -73,10 +77,6 @@ class PokemonController extends Controller
             'searched_at' => now(),
         ]);
 
-        Favorito::updateOrCreate(
-            ['api_id' => $pokemonDetailsPayload['id']],
-            ['nombre' => $pokemonDetailsPayload['name']]
-        );
 
 
         return back()->with('pokemon', $pokemonDetailsPayload);
@@ -84,23 +84,20 @@ class PokemonController extends Controller
 
     public function favorito(Request $request, PokemonApiService $pokemonApiService): RedirectResponse
     {
-        $favoritoQuery = $request->validate([
-            'pokemon_id' => ['required', 'integer'],
-        ]);
+        Log::info('Request data: ', $request->all());
 
-        $pokemonId = $favoritoQuery['pokemon_id'];
+        $pokemonId = $request;
 
         try {
-            $pokemonDetailsPayload = $pokemonApiService->getPokemonById($pokemonId);
         } catch (PokemonNotFoundException $exception) {
             return back()->with('error', "No encontramos al Pokémon. Verifica el ID ingresado.");
         }
 
         Favorito::updateOrCreate(
-            ['api_id' => $pokemonDetailsPayload['id']],
-            ['nombre' => $pokemonDetailsPayload['name']]
+            ['api_id' => $pokemonId['api_id']],
+            ['nombre' => $pokemonId['nombre']]
         );
 
-        return back()->with('success', "El Pokémon {$pokemonDetailsPayload['name']} ha sido agregado a favoritos.");
+        return back()->with('success', "El Pokémon {$pokemonId['name']} ha sido agregado a favoritos.");
     }
 }
