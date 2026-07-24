@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\PokemonNotFoundException;
 use App\Models\PokemonSearchLog;
+use App\Models\Favorito;
 use App\Services\PokemonApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -72,6 +73,34 @@ class PokemonController extends Controller
             'searched_at' => now(),
         ]);
 
+        Favorito::updateOrCreate(
+            ['api_id' => $pokemonDetailsPayload['id']],
+            ['nombre' => $pokemonDetailsPayload['name']]
+        );
+
+
         return back()->with('pokemon', $pokemonDetailsPayload);
+    }
+
+    public function favorito(Request $request, PokemonApiService $pokemonApiService): RedirectResponse
+    {
+        $favoritoQuery = $request->validate([
+            'pokemon_id' => ['required', 'integer'],
+        ]);
+
+        $pokemonId = $favoritoQuery['pokemon_id'];
+
+        try {
+            $pokemonDetailsPayload = $pokemonApiService->getPokemonById($pokemonId);
+        } catch (PokemonNotFoundException $exception) {
+            return back()->with('error', "No encontramos al Pokémon. Verifica el ID ingresado.");
+        }
+
+        Favorito::updateOrCreate(
+            ['api_id' => $pokemonDetailsPayload['id']],
+            ['nombre' => $pokemonDetailsPayload['name']]
+        );
+
+        return back()->with('success', "El Pokémon {$pokemonDetailsPayload['name']} ha sido agregado a favoritos.");
     }
 }

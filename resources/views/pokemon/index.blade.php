@@ -39,6 +39,19 @@
     <!-- Tarjeta de Resultado del Pokémon -->
     @if ($pokemon = session('pokemon'))
         <!-- Ojo: Revisar responsivo en pantallas ultra-wide más adelante -->
+        <form action="{{ route('pokemon.favorito') }}" method="POST" class="flex justify-end">
+            @csrf
+            <input type="hidden" name="api_id" value="{{ $pokemon['id'] }}">
+            <input type="hidden" name="nombre" value="{{ $pokemon['name'] }}">
+            <button
+                type="submit"
+                class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors duration-150 flex items-center gap-1"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Guardar Favorito
+            </button>
         <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Columna Izquierda: Imagen e Info Básica -->

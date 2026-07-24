@@ -9,7 +9,7 @@ use Inertia\Inertia;
 Route::get('/', [PokemonController::class, 'index'])->name('home');
 Route::get('/pokemon', [PokemonController::class, 'index'])->name('pokemon.index');
 Route::post('/pokemon/search', [PokemonController::class, 'search'])->name('pokemon.search');
-
+Route::post('/pokemon/favorito', [PokemonController::class, 'favorito'])->name('pokemon.favorito');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return redirect()->route('pokemon.index');
